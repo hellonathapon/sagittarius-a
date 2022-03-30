@@ -2,32 +2,27 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme } from './themes'
 import { GlobalStyles } from './globalStyles'
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import { useDarkMode } from './utils/useDarkMode';
+import { Header, Star } from './components';
+import * as S from './styles';
 
 function App() {
-  const [theme, setTheme] = React.useState('light')
-
-  const toggleTheme = () => {
-    theme === 'light' ? setTheme('dark') : setTheme('light')
-  }
-
-  const isDarkMode = theme === 'dark' ? true : false;
-
+  const [ theme, toggleTheme ] = useDarkMode();
+      
   return (
     <ThemeProvider theme={ theme === 'light' ? lightTheme : darkTheme }>
       <>
         <GlobalStyles/>
         <div className="App">
-        <header className="App-header">
-          <h1>hello world</h1>
-          <DarkModeSwitch
-            style={{ marginBottom: '2rem' }}
-            checked={isDarkMode}
-            onChange={toggleTheme}
-            size={50}
-          />
-        </header>
-      </div> 
+          <Header />
+          <S.Body>
+            <h1>{ theme === "light"? "Light Side" : "Dark Side"}</h1>
+            <button
+              onClick={ toggleTheme }
+            >Mode</button>
+            <Star theme={ theme }/>
+          </S.Body>
+        </div> 
       </>
     </ThemeProvider>
   );
